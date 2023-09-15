@@ -1,0 +1,20 @@
+#!/bin/bash
+# check_uptime
+# Version 1.05
+# By Martti Tõldsepp
+
+# Get the uptime in seconds from /proc/uptime
+uptime_seconds=$(awk '{print int($1)}' /proc/uptime)
+
+# Calculate uptime in minutes and hours
+uptime_minutes=$((uptime_seconds / 60))
+uptime_hours=$((uptime_minutes / 60))
+uptime_minutes=$((uptime_minutes % 60))
+
+if ((uptime_minutes < 15)); then
+  echo "CRITICAL: System Uptime - Less than 15 minutes ($uptime_hours Hours, $uptime_minutes Minutes)"
+  exit 2  # Exit with a critical status code (2)
+else
+  echo "System Uptime - $uptime_hours Hours, $uptime_minutes Minutes"
+  exit 0  # Exit with a success status code (0)
+fi
