@@ -7,7 +7,7 @@ ForEach ($disabledUser in $disabledUsers) {
         foreach ($group in $groupstoRemove) {
             if ($group.SamAccountName -ne "Domain Users") {
                 Write-Host "`t $( $group.SamAccountName)"
-                # Add the removal logic here, e.g., Remove-ADGroupMember
+                #Remove-ADGroupMember -Identity $group -Members $disabledUser -Confirm:$false
             }
         }
     }
