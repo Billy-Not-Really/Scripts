@@ -1,0 +1,24 @@
+# Connect to Azure AD
+#Connect-AzureAD
+
+# Get all users from Azure AD (you may need to modify this to get the specific set of users)
+$users = Get-AzureADUser -All $true | Where-Object {$_.UserType -like "Member" -and $_.UserPrincipalName -like "*@domain.com" -and $_.AccountEnabled -like "False"}
+
+# Iterate through each user
+foreach ($user in $users) {
+# Get the user's group memberships
+    [array]$userGroups = Get-AzureADUserMembership -ObjectId $user.ObjectId
+    if (!($userGroups.Count -eq 1 -and $userGroups[0].DisplayName -eq "All Users")) {
+        Write-Host " $($user.UserPrincipalName) Remove from groups: "
+        # Remove the user from all groups
+        foreach ($group in $userGroups) {
+            if ($group.DisplayName -ne "All Users") {
+                #if ($group.DirSyncEnabled) {Write-Host "LokaalneAD grupp"}
+                #if ($group.Mail -ne "") {Write-Host $($group.Mail)}
+                Write-Host "`t $($group.DisplayName) `t $($group.Mail)"
+                #Remove-AzureADGroupMember -ObjectId $group.ObjectId -MemberId $user.ObjectId
+            }
+        }
+    }
+}
+
