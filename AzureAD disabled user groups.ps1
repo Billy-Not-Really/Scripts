@@ -2,7 +2,7 @@
 Connect-AzureAD
 
 # Get all users from Azure AD (you may need to modify this to get the specific set of users)
-$users = Get-AzureADUser -All $true | Where-Object {$_.UserType -like "Member" -and $_.UserPrincipalName -like "*@ee.gt.com" -and $_.AccountEnabled -like "False"}
+$users = Get-AzureADUser -All $true | Where-Object {$_.UserType -like "Member" -and $_.UserPrincipalName -like "*@example.com" -and $_.AccountEnabled -like "False"}
 
 # Iterate through each user
 foreach ($user in $users) {
